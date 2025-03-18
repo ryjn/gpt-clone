@@ -77,13 +77,15 @@ def compress_tokens(vocab_size):
     for i in range(num_merges):
         counts = byte_pairing(tokens)
         top_pair = max_pair(counts)
-        upd_tokens = new_tokens(tokens, top_pair, 256 + i)
+        idx = 256 + i
+        upd_tokens = new_tokens(tokens, top_pair, idx)
+        merges[top_pair] = idx
         tokens = upd_tokens
 
-    return tokens
+    return tokens, merges
 
 
 if __name__ == "__main__":
     # Replace pair with new token
-    final_tokens = compress_tokens(276)
+    final_tokens, merges = compress_tokens(276)
     print(f"final length: {len(final_tokens)}")
